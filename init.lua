@@ -4,10 +4,10 @@
 -- Parameters.
 
 local ONGEN = true -- (true / false) Enable / disable impacts on generated chunk.
-local ONGCHA = 9 -- 9 -- Ongen 1/x chance of impact per generated chunk.
+local ONGCHA = 90 -- 9 -- Ongen 1/x chance of impact per generated chunk.
 
 local ABM = false -- Enable / disable impacts by abm on surface material.
-local ABMINT = 181 -- 181 -- Abm interval.
+local ABMINT = 18100 -- 181 -- Abm interval.
 local ABMCHA = 100000 -- 100000 -- Abm 1/x chance per node.
 local DAMAGE = true -- Enable / disable player damage loop.
 local DAMMAX = 20 -- 20 -- Maximum damage. 20 = direct hit is fatal.
@@ -26,7 +26,7 @@ local SAXMAX = 0 -- When overlapping impact area, the safe area overrides.
 local SAZMIN = 0
 local SAZMAX = 0
 
-local DEBUG = true
+local DEBUG = false
 
 -- Stuff.
 
