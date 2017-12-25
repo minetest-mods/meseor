@@ -32,7 +32,6 @@ local DEBUG = false
 meseor = {}
 
 function meseor.crater(pos, conrad)
-	local env = minetest.env
 	local x = pos.x
 	local y = pos.y
 	local z = pos.z
@@ -44,14 +43,14 @@ function meseor.crater(pos, conrad)
 	end
 	-- Check enough depth.
 	for j = -conrad - 1, -1 do
-		local nodename = env:get_node({x=x,y=y+j,z=z}).name
+		local nodename = minetest.get_node({x=x,y=y+j,z=z}).name
 		if nodename == "air" or nodename == "ignore" then
 			return
 		end
 	end
 	-- Check pos open to sky.
 	for j = 1, 160 do
-		local nodename = env:get_node({x=x,y=y+j,z=z}).name
+		local nodename = minetest.get_node({x=x,y=y+j,z=z}).name
 		if nodename ~= "air" and nodename ~= "ignore"
 		and nodename ~= "default:leaves" and nodename ~= "default:jungleleaves"
 		and nodename ~= "snow:ice" and nodename ~= "snow:needles" then
@@ -60,13 +59,13 @@ function meseor.crater(pos, conrad)
 	end
 	-- Excavate path.
 	for j = 1, 160 do
-		local nodename = env:get_node({x=x,y=y+j,z=z}).name
+		local nodename = minetest.get_node({x=x,y=y+j,z=z}).name
 		if nodename ~= "air" and nodename ~= "ignore" then
-			env:remove_node({x=x,y=y+j,z=z})
+			minetest.remove_node({x=x,y=y+j,z=z})
 		end
 	end
 	-- Add meseorite.
-	env:add_node({x=x,y=y-conrad-1,z=z},{name="default:mese"})
+	minetest.set_node({x=x,y=y-conrad-1,z=z},{name="default:mese"})
 	-- Excavate cone and count excavated nodes.
 	local exsto = 0
 	local exdsto = 0
@@ -80,7 +79,7 @@ function meseor.crater(pos, conrad)
 		for k = -j, j do
 			if i ^ 2 + k ^ 2 <= j ^ 2 then
 				local exsno = false
-				local nodename = env:get_node({x=x+i,y=y-conrad+j,z=z+k}).name
+				local nodename = minetest.get_node({x=x+i,y=y-conrad+j,z=z+k}).name
 				if nodename == "default:stone" then
 					exsto = exsto + 1
 				elseif nodename == "default:desert_stone" then
@@ -99,10 +98,10 @@ function meseor.crater(pos, conrad)
 					exsno = true
 				end
 				if nodename ~= "air" then
-					env:remove_node({x=x+i,y=y-conrad+j,z=z+k})
+					minetest.remove_node({x=x+i,y=y-conrad+j,z=z+k})
 				end
 				if exsno then
-					env:remove_node({x=x+i,y=y-conrad+j,z=z+k})
+					minetest.remove_node({x=x+i,y=y-conrad+j,z=z+k})
 				end
 			end
 		end
@@ -135,14 +134,14 @@ function meseor.crater(pos, conrad)
 				-- Find ground.
 				local groundy = false
 				for j = conrad - 1, -160, -1 do
-					local nodename = env:get_node({x=x+i,y=y+j,z=z+k}).name
+					local nodename = minetest.get_node({x=x+i,y=y+j,z=z+k}).name
 					if nodename == "default:leaves" or nodename == "default:jungleleaves"
 					or nodename == "default:papyrus" or nodename == "default:dry_shrub"
 					or nodename == "default:grass_1" or nodename == "default:grass_2"
 					or nodename == "default:grass_3" or nodename == "default:grass_4"
 					or nodename == "default:grass_5" or nodename == "default:apple"
 					or nodename == "default:junglegrass" or nodename == "snow:needles" then
-						env:remove_node({x=x+i,y=y+j,z=z+k})
+						minetest.remove_node({x=x+i,y=y+j,z=z+k})
 					elseif nodename ~= "air" and nodename ~= "ignore" and nodename ~= "snow:snow"
 					and nodename ~= "default:water_source" and nodename ~= "default:water_flowing" then
 						groundy = y+j
@@ -154,22 +153,22 @@ function meseor.crater(pos, conrad)
 					local y = groundy + 1
 					local z = z + k
 					if math.random() < pexjtree then
-						env:add_node({x=x,y=y,z=z},{name="default:jungletree"})
+						minetest.set_node({x=x,y=y,z=z},{name="default:jungletree"})
 					elseif math.random() < pextree then
-						env:add_node({x=x,y=y,z=z},{name="default:tree"})
+						minetest.set_node({x=x,y=y,z=z},{name="default:tree"})
 					elseif math.random() < pexsan then
-						env:add_node({x=x,y=y,z=z},{name="default:sand"})
+						minetest.set_node({x=x,y=y,z=z},{name="default:sand"})
 					elseif math.random() < pexdsan then
-						env:add_node({x=x,y=y,z=z},{name="default:desert_sand"})
+						minetest.set_node({x=x,y=y,z=z},{name="default:desert_sand"})
 					elseif math.random() < pexdirt then
-						env:add_node({x=x,y=y,z=z},{name="default:dirt"})
+						minetest.set_node({x=x,y=y,z=z},{name="default:dirt"})
 					elseif math.random() < pexdsto then
-						env:add_node({x=x,y=y,z=z},{name="default:desert_stone"})
+						minetest.set_node({x=x,y=y,z=z},{name="default:desert_stone"})
 					elseif math.random() < pexsto then
 						if math.random(STOCHA) == 2 then
-							env:add_node({x=x,y=y,z=z},{name="default:stone"})
+							minetest.set_node({x=x,y=y,z=z},{name="default:stone"})
 						else
-							env:add_node({x=x,y=y,z=z},{name="default:gravel"})
+							minetest.set_node({x=x,y=y,z=z},{name="default:gravel"})
 						end
 					end
 					addtot = addtot + 1
@@ -192,6 +191,11 @@ function meseor.crater(pos, conrad)
 			end
 		end
 	end
+	minetest.after(0.1, function(pos1, pos2)
+		local vm = minetest.get_voxel_manip(pos1, pos2)
+		vm:update_liquids()
+		vm:write_to_map()
+	end, {x = pos.x-rimrad, y = pos.y-rimrad, z= pos.z-rimrad }, {x= pos.x+rimrad, y = pos.y+160, z= pos.z+rimrad})
 end
 
 
@@ -200,7 +204,6 @@ end
 if ONGEN then
 	minetest.register_on_generated(function(minp, maxp, seed)
 		if math.random(ONGCHA) == 2 then
-			local env = minetest.env
 			local maxrad = RADMAX
 			if maxrad > 16 then maxrad = 16 end
 			local conrad = math.random(RADMIN, maxrad)
@@ -211,7 +214,7 @@ if ONGEN then
 			local surfy = false
 			local aa = false
 			for y = maxp.y, minp.y, -1 do
-				local nodename = env:get_node({x=x,y=y,z=z}).name
+				local nodename = minetest.get_node({x=x,y=y,z=z}).name
 				if nodename == "default:water_source" or nodename == "default:water_flowing" then
 					return
 				elseif nodename == "air" then
@@ -245,14 +248,13 @@ if ABM then
 		interval = ABMINT,	
 		chance = ABMCHA,
 		action = function(pos, node, _, _)
-			local env = minetest.env
 			local x = pos.x
 			local y = pos.y
 			local z = pos.z
 			-- Find close surface above, abort if underwater or no close surface found.
 			local surfy = false
 			for j = 1, 4 do
-				local nodename = env:get_node({x=x,y=y+j,z=z}).name
+				local nodename = minetest.get_node({x=x,y=y+j,z=z}).name
 				if nodename == "default:water_source" or nodename == "default:water_flowing" then
 					return
 				elseif nodename == "air" then
