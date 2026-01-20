@@ -8,7 +8,7 @@ Dependencies: default
 Licenses:
 
  * Code: LGPL-2.1
- * `meseor.ogg`: original by kasparsj, CC 0, bass-boosted.
+ * See [LICENSE](LICENSE) file
 
 Mod usage notes:
 
